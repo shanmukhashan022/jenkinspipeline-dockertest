@@ -4,7 +4,7 @@ pipeline {
 
         stage('Clone Repo') {
           steps {
-            sh 'rm -rf dockertest'
+            sh 'rm -rf dockertest2'
             sh 'git clone https://github.com/shanmukhashan022/jenkinspipeline-dockertest.git'
             }
         }
