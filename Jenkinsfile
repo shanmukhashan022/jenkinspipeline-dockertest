@@ -11,13 +11,16 @@ pipeline {
 
         stage('Build Docker Image') {
           steps {
-            sh 'docker build -t shanmukhashan022/new_jenkins.'
+              sh 'docker build -t shanmukhashan022/new_jenkins:${BUILD_NUMBER}.'
             }
         }
 
         stage('Push Image to Docker Hub') {
           steps {
-           sh    'docker push shanmukhashan022/new_jenkins1'
+           sh    withCredentials([string(credentialsId: 'DOCKER', variable: 'access token')]) {
+           sh    'docker login -u shanmukhashan022'
+           }
+           sh    'docker push shanmukhashan022/new_jenkins1:${BUILD_NUMBER}'
            }
         }
 
