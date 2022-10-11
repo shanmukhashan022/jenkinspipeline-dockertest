@@ -1,4 +1,8 @@
 pipeline {
+    environment {
+        dockerSwarmManager = '10.40.1.26:2375'
+        dockerhost = '10.40.1.26'
+    }
     agent any
     tools {
         maven "mvn 363"
@@ -36,15 +40,15 @@ pipeline {
 
         stage('Deploy to Docker Host') {
           steps {
-            sh    'docker -H tcp://10.1.1.200:2375 stop prodwebapp1 || true'
-            sh    'docker -H tcp://10.1.1.200:2375 run --rm -dit --name prodwebapp1 --hostname prodwebapp1 -p 8000:80 shanmukhashan022/new_jenkins'
+           sh "docker -H tcp://$dockerSwarmManager service rm testing1 || true"
+           sh "docker -H tcp://$dockerSwarmManager service create --name testing1 -p 8000:80 -p 8000:80 shanmukhashan022/new_jenkins'
             }
         }
 
         stage('Check WebApp Rechability') {
           steps {
           sh 'sleep 10s'
-          sh ' curl http://10.1.1.200:8000'
+          sh 'curl http://$dockerhost:8100 || exit 1'
           }
         }
 
