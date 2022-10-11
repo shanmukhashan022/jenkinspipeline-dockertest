@@ -4,7 +4,6 @@ pipeline {
         maven "mvn 363"
     }
     stages {
-          
         stage('maven 363') {
           steps {
               script{ 
@@ -12,7 +11,6 @@ pipeline {
               }
           }
         }
-    }
               
         stage('Clone Repo') {
           steps {
@@ -31,7 +29,6 @@ pipeline {
           steps {
            sh    withCredentials([string(credentialsId: 'DOCKER', variable: 'access token')]) {
            sh    'docker login -u shanmukhashan022'
-           }
            sh    'docker push shanmukhashan022/new_jenkins1:${BUILD_NUMBER}'
            }
         }
